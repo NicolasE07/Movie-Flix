@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Movie Flix</title>
+		<link rel="stylesheet" href="src/css/style.css" />
+		<link rel="stylesheet" href="src/css/normalize.css" />
+		<!-- Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="shortcut icon" href="src/images/play.png" type="image/x-icon">
+	</head>
+	<body>
+		<header class="header">
+			<div class="header__title container">
+				<h1 class="title__header">Movie Flix</h1>
+			</div>
+			<div class="header__search container">
+				<input type="text" class="input__search" placeholder="Avengers">
+				<img class="header__icon" src="src/icons/search.svg" alt="" />
+			</div>
+		</header>
+		<nav class="nav">
+			<div class="nav__list container">
+				<ul class="nav__list--ul">
+					<li class="nav__list--item" id="show-Categories">
+						CATEGORIAS
+					</li>
+				</ul>
+			</div>
+
+			<div id="categories" class="nav__categories inactive container ">
+				
+			</div>
+		</nav>
+		<main class="main">
+			<!-- Movie -->
+			<section class="section__trends ">
+				<div class="section__trends--header container">
+					<h2>TENDECIAS - PELICULAS</h2>
+				</div>
+				<article class="article__movies">
+					<!-- Estructura -->
+					<!-- <div class="article__card-movie">
+                        <img class="movie-post" src="https://tmdbcdn2.fun/sys/poster/ztqpm1qda4m7frtez92lk91xv9opkeiaxyqap6e-m.jpg" alt="">
+                        
+                    </div> -->
+				</article>
+			</section>
+			<!-- TV -->
+			<section class="section__trends-tv ">
+				<div class="section__trends--header container">
+					<h2>TENDECIAS - SERIES</h2>
+				</div>
+				<article class="article__movies">
+					<!-- Estructura -->
+					<!-- <div class="article__card-movie">
+                        <img class="movie-post" src="https://tmdbcdn2.fun/sys/poster/ztqpm1qda4m7frtez92lk91xv9opkeiaxyqap6e-m.jpg" alt="">
+                        
+                    </div> -->
+				</article>
+			</section>
+
+			<!-- MOVIE DETAILS -->
+			<section id="details" class="section__details inactive">
+				<div class="section__details--header container">
+					<h2>Deceived</h2>
+
+					<div class="duration">
+						<p>⭐ 2.4</p>
+						<p>1h 30min</p>
+						<p>2018</p>
+					</div>
+
+					<p class="description">
+						After a man is accused of murdering his ex wife and all the evidence is against him, a woman
+						enters his life that he can't seem to get off his mind. Nothing seems right and now he must
+						try to find out why he is being blamed for the crime he didn't commit and find out who is
+						truly behind it and why
+					</p>
+
+					<div class="ver">
+						<img src="src/icons/search.svg" alt="" />
+						<a class="">VER AHORA</a>
+					</div>
+				</div>
+			</section>
+
+			<!-- Search For Categories -->
+			<section class="section__categorie inactive">
+				<div class="section__categorie--header container">
+					<h3 class="section__category--title">Accion</h3>
+				</div>
+
+				<article class="article__categorie--movie container">
+					<!-- Estructura -->
+					<!-- <div class="article__card-movie">
+                        <img class="movie-post" src="https://tmdbcdn2.fun/sys/poster/ztqpm1qda4m7frtez92lk91xv9opkeiaxyqap6e-m.jpg" alt="">
+                        
+                    </div> -->
+				</article>
+				
+			</section>
+
+		</main>
+
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="src/js/nodes.js"></script>
+		<script src="src/js/index.js"></script>
+		<script src="src/js/navigation.js"></script>
+	</body>
+</html>
