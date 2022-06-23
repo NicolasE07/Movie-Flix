@@ -247,6 +247,34 @@ a {
 	margin-top: 65px;
 }
 
+.btn_pages{
+	display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    justify-items: center;
+}
+
+.btn_pages p{
+	align-self: center;
+}
+.search_next, .search_back{
+	width: 50px;
+    height: 30px;
+    margin: 20px auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 30px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+
+}
+
+.search_back{
+	background-image: url('../icons/back.svg');
+}
+.search_next{
+	background-image: url('../icons/next.svg');
+}
 .article__categorie--movie{
 	margin-top: 20px;
 	display: grid;

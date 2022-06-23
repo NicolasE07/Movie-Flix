@@ -25,3 +25,7 @@ const articleCard = $('.article__card-movie')
 //section de search for categorie
 const titlePageCategory= $('.section__category--title')
 const sectionCategorie = $('.section__categorie')
+const containerBtnPagination = $('#btn_pages')
+const pagText = $('#pag')
+const btnBack = $('.search_back')
+const btnNext = $('.search_next')

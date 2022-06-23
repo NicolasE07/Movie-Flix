@@ -11,7 +11,6 @@ const api = axios.create({
 const moviesInTrend = async () => {
 	const { data } = await api('trending/movie/day');
 	const movies = data.results;
-	console.log(movies);
 	const sectionArtcle = document.querySelector('.section__trends .article__movies');
 	sectionArtcle.innerHTML = '';
 
@@ -42,7 +41,7 @@ const moviesInTrend = async () => {
 const tvInTrend = async () => {
 	const { data } = await api('trending/tv/day');
 	const series = data.results;
-	console.log(series);
+
 	const sectionArtcle = document.querySelector('.section__trends-tv .article__movies');
 	sectionArtcle.innerHTML = '';
 	series.forEach((serie) => {
@@ -76,7 +75,6 @@ const getCategoriesMovie = async () => {
 		},
 	});
 	const categories = data.genres;
-	console.log('Categories', categories);
 	showCategories.innerHTML = '';
 	categories.forEach((categorie) => {
 		const ul = document.createElement('ul');
@@ -90,8 +88,10 @@ const getCategoriesMovie = async () => {
 		showCategories.appendChild(ul);
 		li.style.cssText = `cursor:pointer;`;
 		li.addEventListener('click', () => {
-			console.log(`#categorie`);
-			location.hash = `#categorie=${categorie.id}-${categorie.name.normalize('NFD').replace(/[\u0300-\u036f]/g,"").toLowerCase()}-movie`;
+			location.hash = `#categorie=${categorie.id}-${categorie.name
+				.normalize('NFD')
+				.replace(/[\u0300-\u036f]/g, '')
+				.toLowerCase()}-movie`;
 		});
 	});
 };
@@ -103,7 +103,6 @@ const movieDetails = async (id, type) => {
 		},
 	});
 	const details = [data];
-	console.log('movie', details);
 	const section = document.getElementById('details');
 	section.innerHTML = '';
 
@@ -114,20 +113,22 @@ const movieDetails = async (id, type) => {
 		const pop = document.createElement('p');
 		const duration = document.createElement('p');
 		const date = document.createElement('p');
-		const description = document.createElement('p'); 
+		const description = document.createElement('p');
 		const a = document.createElement('a');
-		const aText = document.createTextNode('Ver Ahora')
+		const aText = document.createTextNode('Ver Ahora');
 		const h2Text = document.createTextNode(detail.original_title || detail.name);
 		const popText = document.createTextNode(`⭐${detail.vote_average}`);
-		const durationText = document.createTextNode(type==="movie"? `${detail.runtime}Min`:`${detail.number_of_seasons}T`);
+		const durationText = document.createTextNode(
+			type === 'movie' ? `${detail.runtime}Min` : `${detail.number_of_seasons}T`
+		);
 		const dateText = document.createTextNode(detail.release_date || detail.first_air_date);
 		const descriptionText = document.createTextNode(`${detail.overview}`);
 		container.classList.add('section__details--header', 'container');
 		description.classList.add('description');
 		containerRun.classList.add('duration');
-		a.classList.add('ver')
-		a.setAttribute('href', `${detail.homepage}`)
-		a.setAttribute('target', '_blank')
+		a.classList.add('ver');
+		a.setAttribute('href', `${detail.homepage}`);
+		a.setAttribute('target', '_blank');
 
 		section.style.cssText = `background-image: linear-gradient(180deg, #000000af, 0%, #000000af 100%),
 		url('https://image.tmdb.org/t/p/original${detail.poster_path}');
@@ -145,8 +146,8 @@ const movieDetails = async (id, type) => {
 		description.appendChild(descriptionText);
 		container.appendChild(description);
 		date.appendChild(dateText);
-		a.appendChild(aText)
-		container.appendChild(a)
+		a.appendChild(aText);
+		container.appendChild(a);
 
 		const ul = document.createElement('ul');
 		detail.genres.forEach((name) => {
@@ -155,7 +156,10 @@ const movieDetails = async (id, type) => {
 			container.insertBefore(ul, description);
 			ul.appendChild(li);
 			li.addEventListener('click', () => {
-				location.hash = `#categorie=${name.id}-${name.name.normalize('NFD').replace(/[\u0300-\u036f]/g,"").toLowerCase()}-${type}`;
+				location.hash = `#categorie=${name.id}-${name.name
+					.normalize('NFD')
+					.replace(/[\u0300-\u036f]/g, '')
+					.toLowerCase()}-${type}`;
 			});
 			ul.style.display = 'flex';
 			li.style.cursor = 'pointer';
@@ -163,7 +167,6 @@ const movieDetails = async (id, type) => {
 			li.style.textDecoration = ' underline';
 			li.style.fontSize = ' 1.6rem';
 			li.appendChild(liText);
-			console.log(name.name);
 		});
 	});
 };
@@ -215,15 +218,19 @@ const movieDetails = async (id, type) => {
 // 	});
 // };
 
-const getMoviesForCategory = async (id, name, type) => {
+const getMoviesForCategory = async (id, name, type, pagination) => {
 	const { data } = await api(`discover/${type}`, {
 		params: {
 			with_genres: id,
+			page: pagination,
 		},
 	});
+
+	console.log(data);
 	const movies = data.results;
-	console.log(movies);
+
 	const sectionArtcle = document.querySelector('.section__categorie .article__categorie--movie');
+	pagText.innerText = `Pagina ${data.page} de 20`;
 
 	sectionArtcle.innerHTML = '';
 	titlePageCategory.innerText = `${name.toUpperCase()}`;
@@ -251,39 +258,55 @@ const getMoviesForCategory = async (id, name, type) => {
 		sectionArtcle.appendChild(div);
 	});
 };
-const searchForName = async (query, name) => {
+const searchForName = async (query, name, pag) => {
 	const { data } = await api('search/multi', {
 		params: {
 			query,
+			page: pag,
 		},
 	});
 	const movies = data.results;
-	console.log(movies);
 	const sectionArtcle = document.querySelector('.section__categorie .article__categorie--movie');
 
 	sectionArtcle.innerHTML = '';
 	titlePageCategory.innerText = `${name}`;
 
-	movies.forEach((movie) => {
+	console.log(data);
+	pagText.innerText = `Pagina ${data.page} de ${data.total_pages}`;
+	const filter = movies.filter((movie) => movie.media_type !== 'person');
+	console.log(filter);
+	filter.forEach((movie) => {
 		const div = document.createElement('div');
 		const titlemovie = document.createElement('h3');
+
 		const titlemovieText = document.createTextNode(movie.title || movie.name);
 		div.classList.add('article__card-movie');
 		const img = document.createElement('img');
-
 		img.setAttribute('alt', movie.title);
-		img.setAttribute('src', 'https://image.tmdb.org/t/p/w300' + movie.poster_path);
-		img.classList.add('movie-post');
+		if (movie.poster_path === null && movie.backdrop_path === null) {
+			img.setAttribute('src', 'https://pbs.twimg.com/media/EQVqgvfW4AgU7bk?format=jpg&name=large');
+		} else if (movie.poster_path === null || movie.poster_path === undefined) {
+			img.setAttribute('src', 'https://image.tmdb.org/t/p/w300' + movie.backdrop_path);
+		} else {
+			img.setAttribute('src', 'https://image.tmdb.org/t/p/w300' + movie.poster_path);
+		}
 
+		// if(movie.media_type==='person'){
+		// 	div.style.display="none"
+		// }
+
+		img.classList.add('movie-post');
+		img.style.objectFit = 'cover';
 		div.appendChild(img);
 		div.appendChild(titlemovie);
 		titlemovie.appendChild(titlemovieText);
 		img.addEventListener('click', () => {
-			location.hash = `#detailsmovie=${movie.id}-${movie.title}`;
+			location.hash = `#detailsmovie=${movie.id}_${movie.title || movie.name}_${movie.media_type}`;
 		});
 		titlemovie.addEventListener('click', () => {
-			location.hash = `#detailsmovie=${movie.id}-${movie.title}`;
+			location.hash = `#detailsmovie=${movie.id}_${movie.title || movie.name}_${movie.media_type}`;
 		});
+
 		sectionArtcle.appendChild(div);
 	});
 };

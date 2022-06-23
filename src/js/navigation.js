@@ -1,3 +1,4 @@
+let pag = 1;
 window.addEventListener('DOMContentLoaded', navigate, false);
 window.addEventListener('hashchange', navigate, false);
 titleHeader.addEventListener('click', () => {
@@ -24,21 +25,19 @@ categoriesBtn.addEventListener('click', () => {
 	});
 });
 
+
+
 function navigate() {
 	if (location.hash.startsWith('#home')) {
-		console.log('HOME');
 		homePage();
 		moviesInTrend();
 		tvInTrend();
 		getCategoriesMovie();
 	} else if (location.hash.startsWith('#detailsmovie=')) {
-		console.log('Detalles');
 		detailPageMovie();
 	} else if (location.hash.startsWith('#detailstv=')) {
-		console.log('Detalles TV');
 		detailPageTv();
 	} else if (location.hash.startsWith('#categorie=')) {
-		console.log('Categorias');
 		categoriePage();
 	} else if (location.hash.startsWith('#search=')) {
 		searchPage();
@@ -65,7 +64,6 @@ const detailPageMovie = () => {
 	sectionDetails.classList.remove('inactive');
 	const [_, categoryName] = location.hash.split('=');
 	const [id, name, type] = categoryName.split('_');
-	console.log(`este es el nombre${name.split('%20').join(' ')} type = ${type}`);
 	movieDetails(id, type);
 };
 const detailPageTv = () => {
@@ -73,21 +71,42 @@ const detailPageTv = () => {
 	sectionTrends.classList.add('inactive');
 	sectionTvTrends.classList.add('inactive');
 	sectionDetails.classList.remove('inactive');
+	containerBtnPagination.classList.add('btn_pages')
 	const [_, categoryName] = location.hash.split('=');
 	const [id, name] = categoryName.split('-');
-	console.log(`este es el nombre${name.split('%20').join(' ')}`);
 	tvDetails(id);
 };
+
+
 const categoriePage = () => {
 	nav.classList.add('inactive');
 	sectionTrends.classList.add('inactive');
 	sectionTvTrends.classList.add('inactive');
 	sectionDetails.classList.add('inactive');
 	sectionCategorie.classList.remove('inactive');
+	containerBtnPagination.classList.remove('inactive')
 	const [_, categoryName] = location.hash.split('=');
 	const [id, name, type] = categoryName.split('-');
-	console.log(`este es el nombre${name.split('%20').join(' ')}`);
-	getMoviesForCategory(id, name.split('%20').join(' '), type);
+	let pag = 1
+
+	getMoviesForCategory(id, name.split('%20').join(' '), type, pag);
+	btnBack.addEventListener('click',()=>{
+		if(pag ===0){
+			pag=20
+		}else{
+			getMoviesForCategory(id, name.split('%20').join(' '), type, pag--);
+
+		}
+	})
+	btnNext.addEventListener('click',()=>{
+		if(pag > 20){
+			pag=1
+		}else{
+			getMoviesForCategory(id, name.split('%20').join(' '), type, pag++);
+
+		}
+		
+	})
 };
 const searchPage = () => {
 	nav.classList.add('inactive');
@@ -95,7 +114,13 @@ const searchPage = () => {
 	sectionTvTrends.classList.add('inactive');
 	sectionDetails.classList.add('inactive');
 	sectionCategorie.classList.remove('inactive');
+	containerBtnPagination.classList.add('inactive')
+	containerBtnPagination.classList.remove('btn_pages')
 	const [_, Name] = location.hash.split('=');
 	inputSearch.value = '';
 	searchForName(Name.split('%20').join(' '), Name.split('%20').join(' '));
 };
+
+
+
+
